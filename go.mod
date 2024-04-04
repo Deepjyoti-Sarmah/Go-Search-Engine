@@ -3,6 +3,7 @@ module github.com/Deepjyoti-Sarmah/GolangSearchEngine
 go 1.22.1
 
 require (
+	github.com/a-h/templ v0.2.648
 	github.com/gofiber/fiber/v2 v2.52.4
 	github.com/joho/godotenv v1.5.1
 )
