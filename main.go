@@ -8,6 +8,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Deepjyoti-Sarmah/GolangSearchEngine/db"
 	"github.com/Deepjyoti-Sarmah/GolangSearchEngine/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -31,6 +32,7 @@ func main() {
 	})
 
 	app.Use(compress.New())
+	db.InitDB()
 
 	routes.SetRoutes(app)
 
