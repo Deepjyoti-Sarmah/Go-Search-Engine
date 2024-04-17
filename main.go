@@ -37,7 +37,7 @@ func main() {
 	routes.SetRoutes(app)
 
 	// Start our server and listen for a shutudown
-	go func(){
+	go func() {
 		if err := app.Listen(port); err != nil {
 			log.Panic(err)
 		}
@@ -46,7 +46,7 @@ func main() {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 
-	<- c // block the main thread untill interrupted
+	<-c // block the main thread untill interrupted
 
 	app.Shutdown()
 	fmt.Println("shutting down server")

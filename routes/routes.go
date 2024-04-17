@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"fmt"
+	// "fmt"
 
-	"github.com/Deepjyoti-Sarmah/GolangSearchEngine/views"
+	// "github.com/Deepjyoti-Sarmah/GolangSearchEngine/views"
 	"github.com/a-h/templ"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
@@ -17,7 +17,6 @@ func render(c *fiber.Ctx, component templ.Component, options ...func(*templ.Comp
 	return adaptor.HTTPHandler(componentHandler)(c)
 }
 
-
 type settingForm struct {
 	Amount   int  `form:"amount"`
 	SearchOn bool `form:"searchOn"`
@@ -25,27 +24,9 @@ type settingForm struct {
 }
 
 func SetRoutes(app *fiber.App) {
-	app.Get("/", func(c *fiber.Ctx) error {
-		return render(c, views.Home())
-	})
-
-	app.Post("/", func(c *fiber.Ctx) error {
-		input := settingForm{}
-		if err := c.BodyParser(&input); err != nil {
-			return c.SendString("<h2>Error: Something went Wrong</h2>")
-		}
-		fmt.Println(input)
-		return c.SendStatus(200)
-	})
+	app.Get("/",AuthMiddleware, LoginHandler)
+	app.Post("/", AuthMiddleware, LoginPostHandler)
 
 	app.Get("/login", LoginHandler)
-
-	app.Post("/login", func(c *fiber.Ctx) error {
-		input := loginForm{}
-		if err := c.BodyParser(&input); err != nil {
-			return c.SendString("<h2>Error: Something went Wrong</h2>")
-		}
-		// fmt.Println(input)
-		return c.SendStatus(200)
-	})
+	app.Post("/login", LoginPostHandler)
 }
