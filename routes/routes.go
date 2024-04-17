@@ -17,10 +17,6 @@ func render(c *fiber.Ctx, component templ.Component, options ...func(*templ.Comp
 	return adaptor.HTTPHandler(componentHandler)(c)
 }
 
-type loginForm struct {
-	Email    string `form:"email"`
-	Password string `form:"password"`
-}
 
 type settingForm struct {
 	Amount   int  `form:"amount"`
@@ -42,9 +38,7 @@ func SetRoutes(app *fiber.App) {
 		return c.SendStatus(200)
 	})
 
-	app.Get("/login", func(c *fiber.Ctx) error {
-		return render(c, views.Login())
-	})
+	app.Get("/login", LoginHandler)
 
 	app.Post("/login", func(c *fiber.Ctx) error {
 		input := loginForm{}
