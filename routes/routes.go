@@ -1,9 +1,7 @@
 package routes
 
 import (
-	// "fmt"
 
-	// "github.com/Deepjyoti-Sarmah/GolangSearchEngine/views"
 	"github.com/a-h/templ"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
