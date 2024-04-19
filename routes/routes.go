@@ -22,15 +22,15 @@ type settingForm struct {
 }
 
 func SetRoutes(app *fiber.App) {
-	app.Get("/",AuthMiddleware, LoginHandler)
+	app.Get("/", AuthMiddleware, DashboardHandler)
 	app.Post("/", AuthMiddleware, LoginPostHandler)
 
 	app.Get("/login", LoginHandler)
 	app.Post("/login", LoginPostHandler)
 
-  app.Get("/create", func(c *fiber.Ctx) error {
-	u := &db.User{}
-	u.CreateAdmin()
-	return c.SendString("created")
-  })
+	app.Get("/create", func(c *fiber.Ctx) error {
+		u := &db.User{}
+		u.CreateAdmin()
+		return c.SendString("created")
+	})
 }

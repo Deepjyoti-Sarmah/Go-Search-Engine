@@ -2,6 +2,7 @@ package routes
 
 import (
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/Deepjyoti-Sarmah/GolangSearchEngine/db"
@@ -83,4 +84,14 @@ func AuthMiddleware(c *fiber.Ctx) error {
 		return c.Next()
 	}
 	return c.Redirect("/login", 302)
+}
+func DashboardHandler(c *fiber.Ctx) error {
+	settings := &db.SearchSetting{}
+	err := settings.Get()
+	if err != nil {
+		c.Status(500)
+		return c.SendString("<h2>Error: Something went wrong</h2>")
+	}
+	amount := strconv.FormatUint(uint64(settings.Amount), 10)
+	return render(c, views.Home(amount, settings.SearchOn, settings.AddNew))
 }
