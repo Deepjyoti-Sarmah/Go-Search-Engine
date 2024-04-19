@@ -71,7 +71,7 @@ func AuthMiddleware(c *fiber.Ctx) error {
 		return c.Redirect("/login", 302)
 	}
 	// Parse the cookie & check for errors
-	token, err := jwt.ParseWithClaims(cookie, AdminClaims{}, func(t *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(cookie, &AdminClaims{}, func(t *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("SECRET_KEY")), nil
 	})
 	if err != nil {

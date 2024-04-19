@@ -26,7 +26,7 @@ func InitDB() {
 		panic(err)
 	}
 
-	err = DBConn.AutoMigrate()
+	err = DBConn.AutoMigrate(&User{})
 	if err != nil {
 		panic(err)
 	}
