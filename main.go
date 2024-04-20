@@ -10,6 +10,7 @@ import (
 
 	"github.com/Deepjyoti-Sarmah/GolangSearchEngine/db"
 	"github.com/Deepjyoti-Sarmah/GolangSearchEngine/routes"
+	"github.com/Deepjyoti-Sarmah/GolangSearchEngine/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/joho/godotenv"
@@ -35,6 +36,7 @@ func main() {
 	db.InitDB()
 
 	routes.SetRoutes(app)
+	utils.StartCornJobs()
 
 	// Start our server and listen for a shutudown
 	go func() {
