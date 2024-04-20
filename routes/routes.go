@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"github.com/Deepjyoti-Sarmah/GolangSearchEngine/db"
 	"github.com/a-h/templ"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
@@ -16,15 +15,16 @@ func render(c *fiber.Ctx, component templ.Component, options ...func(*templ.Comp
 }
 
 func SetRoutes(app *fiber.App) {
+    app.Get("/login", LoginHandler)
+	app.Post("/login", LoginPostHandler)
+	app.Post("/logout", LogoutHandler)
 	app.Get("/", AuthMiddleware, DashboardHandler)
 	app.Post("/", AuthMiddleware, DashboardPostHandler)
 
-	app.Get("/login", LoginHandler)
-	app.Post("/login", LoginPostHandler)
 
-	app.Get("/create", func(c *fiber.Ctx) error {
-		u := &db.User{}
-		u.CreateAdmin()
-		return c.SendString("created")
-	})
+	// app.Get("/create", func(c *fiber.Ctx) error {
+	// 	u := &db.User{}
+	// 	u.CreateAdmin()
+	// 	return c.SendString("created")
+	// })
 }
