@@ -15,15 +15,9 @@ func render(c *fiber.Ctx, component templ.Component, options ...func(*templ.Comp
 	return adaptor.HTTPHandler(componentHandler)(c)
 }
 
-type settingForm struct {
-	Amount   int  `form:"amount"`
-	SearchOn bool `form:"searchOn"`
-	AddNew   bool `form:"addNew"`
-}
-
 func SetRoutes(app *fiber.App) {
 	app.Get("/", AuthMiddleware, DashboardHandler)
-	app.Post("/", AuthMiddleware, LoginPostHandler)
+	app.Post("/", AuthMiddleware, DashboardPostHandler)
 
 	app.Get("/login", LoginHandler)
 	app.Post("/login", LoginPostHandler)

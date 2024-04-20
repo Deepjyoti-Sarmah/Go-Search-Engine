@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -85,6 +86,7 @@ func AuthMiddleware(c *fiber.Ctx) error {
 	}
 	return c.Redirect("/login", 302)
 }
+
 func DashboardHandler(c *fiber.Ctx) error {
 	settings := &db.SearchSetting{}
 	err := settings.Get()
@@ -95,3 +97,41 @@ func DashboardHandler(c *fiber.Ctx) error {
 	amount := strconv.FormatUint(uint64(settings.Amount), 10)
 	return render(c, views.Home(amount, settings.SearchOn, settings.AddNew))
 }
+
+type settingForm struct {
+	Amount   int  `form:"amount"`
+	SearchOn string `form:"searchOn"`
+	AddNew   string `form:"addNew"`
+}
+
+func DashboardPostHandler ( c *fiber.Ctx) error {
+  input := settingForm{}
+  if err := c.BodyParser(&input); err != nil {
+	c.Status(500)
+	return c.SendString("<h2>Error: Something went wrong</h2>")
+  }
+
+  addNew := false
+  if input.AddNew == "on" {
+	addNew = true
+  }
+
+  searchOn := false
+  if input.SearchOn == "on" {
+	searchOn = true
+  }
+
+  settinngs := &db.SearchSetting{}
+  settinngs.Amount = uint(input.Amount)
+  settinngs.SearchOn = searchOn
+  settinngs.AddNew = addNew
+  err := settinngs.Update()
+  if err != nil {
+	fmt.Println(err)
+	return c.SendString("<h2>Error: Cannot update settings</h2>")
+  }
+
+  c.Append("HX-Refresh", "true")
+  return c.SendStatus(200)
+}
+
