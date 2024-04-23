@@ -16,6 +16,3 @@ func StartCornJobs() {
   fmt.Printf("setup %d corn jobs \n", cronCount)
 }
 
-func runEngine()  {
-  fmt.Println("Starting engine")
-}

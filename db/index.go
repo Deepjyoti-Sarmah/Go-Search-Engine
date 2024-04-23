@@ -28,6 +28,7 @@ func InitDB() {
 
 	err = DBConn.AutoMigrate(&User{}, &SearchSettings{}, &CrawledUrl{}, &SearchIndex{})
 	if err != nil {
+		fmt.Println("Failed to migrate")
 		panic(err)
 	}
 }

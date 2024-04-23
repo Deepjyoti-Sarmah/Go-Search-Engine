@@ -67,13 +67,13 @@ func RunEngine() {
 			fmt.Println("something went wrong updating a Success url")
 			fmt.Println(next.Url)
 		}
-		
+
 		for _, newUrl := range results.CrawlData.Links.External {
 			newUrls = append(newUrls, db.CrawledUrl{Url: newUrl})
 		}
-	}// end of range
+	} // end of range
 	if !settings.AddNew {
-		return 
+		return
 	}
 	//Insert new urls
 	for _, newUrl := range nextUrls {
@@ -85,14 +85,13 @@ func RunEngine() {
 	fmt.Printf("\n Added %d new urls to the database", len(newUrls))
 }
 
-
 func RunIndex() {
 	fmt.Println("started search indexing...")
 	defer fmt.Println("search indexing has finished")
 	crawled := &db.CrawledUrl{}
 	notIndexed, err := crawled.GetNotIndex()
 	if err != nil {
-		return 
+		return
 	}
 
 	idx := make(Index)
