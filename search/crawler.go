@@ -51,6 +51,7 @@ func runCrawl(inputUrl string) CrawlData {
 		//response html
 		data, err := parseBody(resp.Body, baseUrl)
 		if err != nil {
+			fmt.Println("something went wrong getting data from html body")
 			return CrawlData{Url: inputUrl, Success: false, ResponseCode: resp.StatusCode, CrawlData: ParseBody{}}
 		}
 		return CrawlData{Url: inputUrl, Success: true, ResponseCode: resp.StatusCode, CrawlData: data}

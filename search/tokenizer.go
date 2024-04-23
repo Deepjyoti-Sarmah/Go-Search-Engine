@@ -7,7 +7,6 @@ import (
 	snowballeng "github.com/kljensen/snowball/english"
 )
 
-
 func analyze(text string) []string {
 	tokens := tokenize(text)
 	tokens = lowercaseFilter(tokens)

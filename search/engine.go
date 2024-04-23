@@ -14,7 +14,7 @@ func RunEngine() {
 	settings := &db.SearchSettings{}
 	err := settings.Get()
 	if err != nil {
-		fmt.Println("setting went wrong getting the settings")
+		fmt.Println("something went wrong getting the settings")
 		return
 	}
 	// check the search engine is on
