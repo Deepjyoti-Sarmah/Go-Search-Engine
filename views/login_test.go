@@ -9,7 +9,6 @@ import (
 )
 
 func TestLoginView(t *testing.T) {
-	// Pipe the rendered template into goquery.
 	r, w := io.Pipe()
 	go func() {
 		_ = Login().Render(context.Background(), w)
@@ -19,8 +18,8 @@ func TestLoginView(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to read template: %v", err)
 	}
-	// Expect the component to be present.
+	// Expect the component to include a testid.
 	if doc.Find(`form`).Length() == 0 {
-		t.Error("expected form attribute to be rendered, but it wasn't")
+		t.Error("expected form to be rendered, but it wasn't")
 	}
 }
