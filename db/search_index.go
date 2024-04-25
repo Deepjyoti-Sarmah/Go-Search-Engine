@@ -1,6 +1,7 @@
 package db
 
 import (
+	"strings"
 	"time"
 
 	"gorm.io/gorm"
@@ -42,4 +43,22 @@ func (s *SearchIndex) Save(index map[string][]string, crawledUrls []CrawledUrl) 
 		}
 	}
 	return nil
+}
+
+
+func (s *SearchIndex) FullTextSearch(value string) ([]CrawledUrl, error) {
+	terms := strings.Fields(value)
+	var urls []CrawledUrl
+
+	for _, term := range terms {
+		var searchIndexes []SearchIndex
+		if err := DBConn.Preload("Urls").Where("value LIKE ?", "%"+term+"%").Find(&searchIndexes).Error; err != nil {
+			return nil, err
+		}
+
+		for _, seSearchIndex := range searchIndexes {
+			urls = append(urls, seSearchIndex.Urls...)
+		}
+	}
+	return urls, nil
 }

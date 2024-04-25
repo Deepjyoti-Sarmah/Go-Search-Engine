@@ -18,9 +18,9 @@ func TestParseBody(t *testing.T) {
 			</head>
 			<body>
 				<h1>Heading 1</h1>
-				<a href="https://example.com">Internal Link</a>		
-				<a href="https://external.com">External Link</a>		
-				<a href="/internal">Internal Link</a>		
+				<a href="https://example.com">Internal Link</a>
+				<a href="https://external.com">External Link</a>>
+				<a href="/internal">Internal Link</a>
 			</body>
 		</html>
 	`)
@@ -30,40 +30,40 @@ func TestParseBody(t *testing.T) {
 	expectedPageTitle := "Page Title"
 	expectedPageDesc := "Page Description"
 	expectedHeadings := "Heading 1"
-	expectedInternalLinks := []string{"https://example.com", "https://example.com/internsl"}
-	experctedExternalLinks := []string{"https://external.com"}
+	expectedInternalLinks := []string{"https://example.com", "https://example.com/internal"}
+	expectedExternalLinks := []string{"https://external.com"}
 
-	//Call the function
+	// Call the function
 	result, err := parseBody(body, baseURL)
 
-	//Check for errors
+	// Check for errors
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}
 
-	//Compare the page title result with the expected value
+	// Compare the page title result with the expected value
 	if result.PageTitle != expectedPageTitle {
 		t.Errorf("Expected page title '%s', but got '%s'", expectedPageTitle, result.PageTitle)
 	}
 
-	//Compare the page description result with the expected value
+	// Compare the page description result with the expected value
 	if result.PageDescription != expectedPageDesc {
-		t.Errorf("Expected page description '%s', but got '%s',", expectedPageDesc, result.PageDescription)
+		t.Errorf("Expected page description '%s', but got '%s'", expectedPageDesc, result.PageDescription)
 	}
 
-	//Compare the headings result with the expected value
+	// Compare the headings result with the expected value
 	if result.Heading != expectedHeadings {
 		t.Errorf("Expected headings '%s', but got '%s'", expectedHeadings, result.Heading)
 	}
 
-	//Compare the internal links result with the expected value
+	// Compare the internal links result with the expected value
 	if !equalSlices(result.Links.Internal, expectedInternalLinks) {
 		t.Errorf("Expected internal links '%v', but got '%v'", expectedInternalLinks, result.Links.Internal)
 	}
 
-	//Compare the external links result with the expected value
-	if !equalSlices(result.Links.External, experctedExternalLinks) {
-		t.Errorf("Expected external links '%v', but got '%v'", experctedExternalLinks, result.Links.External)
+	// Compare the external links result with the expected value
+	if !equalSlices(result.Links.External, expectedExternalLinks) {
+		t.Errorf("Expected external links '%v', but got '%v'", expectedExternalLinks, result.Links.External)
 	}
 }
 
@@ -77,12 +77,11 @@ func TestGetLinks(t *testing.T) {
 				<a href="/internal">Internal Link</a>
 				<a href="#section">Anchor Link</a>
 				<a href="mailto:info@example.com">Mail Link</a>
-				<a href="tel:+1234567890">Telephone</a>
-				<a href="javascript:void(0)">Javascript Link</a>
+				<a href="tel:+1234567890">Telephone Link</a>
+				<a href="javascript:void(0)">JavaScript Link</a>
 				<a href="document.pdf">PDF Link</a>
 				<a href="document.md">MD Link</a>
 			</body>
-
 		</html>
 	`))
 
@@ -91,20 +90,21 @@ func TestGetLinks(t *testing.T) {
 	expectedInternal := []string{"https://example.com", "https://example.com/internal"}
 	expectedExternal := []string{"https://external.com"}
 
-	//Call the function
+	// Call the function
 	result := getLinks(doc, baseURL)
 
-	//Compare the internal links result with the expected value
+	// Compare the internal links result with the expected value
 	if !equalSlices(result.Internal, expectedInternal) {
 		t.Errorf("Expected internal links '%v', but got '%v'", expectedInternal, result.Internal)
 	}
 
+	// Compare the external links result with the expected value
 	if !equalSlices(result.External, expectedExternal) {
 		t.Errorf("Expected external links '%v', but got '%v'", expectedExternal, result.External)
 	}
 }
 
-//Helper function to check if two strings slices are equal
+// Helper function to check if two string slices are equal
 func equalSlices(a, b []string) bool {
 	if len(a) != len(b) {
 		return false
@@ -117,33 +117,34 @@ func equalSlices(a, b []string) bool {
 	return true
 }
 
-func TestIsSameHost(t *testing.T)  {
-	//Define test case
+func TestIsSameHost(t *testing.T) {
+	// Define test cases
 	testCases := []struct {
 		absoluteURL string
-		baseURL string
-		expected bool
-	} {
+		baseURL     string
+		expected    bool
+	}{
 		{"https://example.com/path", "https://example.com", true},
 		{"https://example.com/path", "https://www.example.com", false},
 		{"https://example.com", "https://example.com", true},
-		{"https://example.com", "https://example.com", false},
-		{"https://example.com", "https://example.com", true},
+		{"https://example.com", "https://example.org", false},
+		{"https://example.com", "http://example.com", true},
 	}
 
-	//Interate over test cases
+	// Iterate over test cases
 	for _, tc := range testCases {
 		result := isSameHost(tc.absoluteURL, tc.baseURL)
 
-		//Compare the result with the expected value
+		// Compare the result with the expected value
 		if result != tc.expected {
-			t.Errorf("For absoluteURL '%s' and baseURL '%s', expected '%v', but got '%v'", tc.absoluteURL, tc.baseURL, tc.expected, result)
+			t.Errorf("For absoluteURL '%s' and baseURL '%s', expected '%v', but got '%v'",
+				tc.absoluteURL, tc.baseURL, tc.expected, result)
 		}
 	}
 }
 
 func TestGetPageData(t *testing.T) {
-	//Create a sample HTML node
+	// Create a sample HTML node
 	doc, _ := html.Parse(strings.NewReader(`
 		<html>
 			<head>
@@ -160,22 +161,22 @@ func TestGetPageData(t *testing.T) {
 	expectedTitle := "Page Title"
 	expectedDesc := "Page Description"
 
-	//Call the function
+	// Call the function
 	resultTitle, resultDesc := getPageData(doc)
 
-	//Compare the title result with the expected value
+	// Compare the title result with the expected value
 	if resultTitle != expectedTitle {
 		t.Errorf("Expected title '%s', but got '%s'", expectedTitle, resultTitle)
 	}
 
-	//Compare the description result with the expected value
+	// Compare the description result with the expected value
 	if resultDesc != expectedDesc {
 		t.Errorf("Expected description '%s', but got '%s'", expectedDesc, resultDesc)
 	}
 }
 
 func TestGetPageHeadings(t *testing.T) {
-	//Create a sample HTML node 
+	// Create a sample HTML node
 	doc, _ := html.Parse(strings.NewReader(`
 		<html>
 			<body>
@@ -191,10 +192,10 @@ func TestGetPageHeadings(t *testing.T) {
 
 	expected := "Heading 1, Heading 2"
 
-	//Call the function
+	// Call the function
 	result := getPageHeadings(doc)
 
-	//Compare the result with the expected value
+	// Compare the result with the expected value
 	if result != expected {
 		t.Errorf("Expected '%s', but got '%s'", expected, result)
 	}
